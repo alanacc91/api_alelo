@@ -17,6 +17,7 @@ import com.alan.api_alelo.DOMAIN.cartao.service.validations.CartaoTemDataDeValid
 import com.alan.api_alelo.DOMAIN.cartao.service.validations.CartaoTemIdentificador;
 import com.alan.api_alelo.DOMAIN.cartao.service.validations.CartaoTemNumero;
 import com.alan.api_alelo.DOMAIN.cartao.service.validations.ValidadeCartaoMaiorQueADataAtual;
+import com.alan.api_alelo.DOMAIN.cliente.service.IClienteService;
 import com.alan.api_alelo.utils.excecao.ExcecaoDeNegocios;
 import com.alan.api_alelo.utils.mensagem.NivelDeMensagemDeNegocios;
 import com.alan.api_alelo.utils.mensagem.PilhaDeMensagensDeNegocios;
@@ -26,6 +27,9 @@ public class CartaoService implements ICartaoService {
 
 	@Autowired
 	ICartaoRepository iCartaoRepository;
+
+	@Autowired
+	IClienteService iClienteService;
 
 	@Override
 	public Page<Cartao> selecionarTodosPaginados(PilhaDeMensagensDeNegocios mensagens, int numeroDaPagina,
@@ -76,6 +80,7 @@ public class CartaoService implements ICartaoService {
 	@Override
 	public void salvar(PilhaDeMensagensDeNegocios mensagens, Cartao cartao) throws ExcecaoDeNegocios {
 		try {
+
 			if (CartaoTemNumero.naoForValido().test(cartao)) {
 				mensagens.adicionarMensagem("Necessário inserir um número para o cartão!",
 						NivelDeMensagemDeNegocios.ERROR);
@@ -87,13 +92,21 @@ public class CartaoService implements ICartaoService {
 			}
 
 			if (CartaoTemDataDeValidade.naoForValido().test(cartao)) {
-				mensagens.adicionarMensagem("Necessário inserir uma data de validade para o cartão",
+				mensagens.adicionarMensagem("Necessário inserir uma data de validade para o cartão!",
 						NivelDeMensagemDeNegocios.ERROR);
 			}
 
 			if (ValidadeCartaoMaiorQueADataAtual.naoForValido().test(cartao)) {
-				mensagens.adicionarMensagem("Data de validade do cartao não pode ser maior que a data atual",
+				mensagens.adicionarMensagem("Data de validade do cartao não pode ser maior ou igual a data atual!",
 						NivelDeMensagemDeNegocios.ERROR);
+			}
+
+			if (mensagens.existirMensagensDeErro()) {
+				throw new ExcecaoDeNegocios(mensagens);
+			}
+
+			if (!iClienteService.existirCliente(cartao.getCliente().getId())) {
+				mensagens.adicionarMensagem("Cliente não cadastradado!", NivelDeMensagemDeNegocios.ERROR);
 			}
 
 			if (mensagens.existirMensagensDeErro()) {
@@ -129,13 +142,21 @@ public class CartaoService implements ICartaoService {
 			}
 
 			if (CartaoTemDataDeValidade.naoForValido().test(cartao)) {
-				mensagens.adicionarMensagem("Necessário inserir uma data de validade para o cartão",
+				mensagens.adicionarMensagem("Necessário inserir uma data de validade para o cartão!",
 						NivelDeMensagemDeNegocios.ERROR);
 			}
 
 			if (ValidadeCartaoMaiorQueADataAtual.naoForValido().test(cartao)) {
-				mensagens.adicionarMensagem("Data de validade do cartao não pode ser maior que a data atual",
+				mensagens.adicionarMensagem("Data de validade do cartao não pode ser maior ou igual a data atual!",
 						NivelDeMensagemDeNegocios.ERROR);
+			}
+
+			if (mensagens.existirMensagensDeErro()) {
+				throw new ExcecaoDeNegocios(mensagens);
+			}
+
+			if (!iClienteService.existirCliente(cartao.getCliente().getId())) {
+				mensagens.adicionarMensagem("Cliente não cadastradado!", NivelDeMensagemDeNegocios.ERROR);
 			}
 
 			if (mensagens.existirMensagensDeErro()) {
