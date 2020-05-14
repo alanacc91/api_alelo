@@ -27,5 +27,5 @@ public interface ICartaoAppService {
 
 	CartaoDTO atualizar(CartaoDTO cartao) throws ExcecaoDeNegocios;
 
-	CartaoDTO deletar(CartaoDTO cartao) throws ExcecaoDeNegocios;
+	CartaoDTO deletar(int id) throws ExcecaoDeNegocios;
 }

@@ -31,6 +31,6 @@ public interface ICartaoRepository {
 
 	void atualizar(Cartao cartao);
 
-	void deletar(Cartao cartao);
+	void deletar(int id);
 
 }

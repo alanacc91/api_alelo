@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class CartaoController {
 	@Autowired
 	ICartaoAppService iCartaoAppService;
 
+	@CrossOrigin
 	@ApiOperation(value = "Seleciona todos os cartões de forma páginada.", response = CartaoDTO.class)
 	@GetMapping("/paginados/{page}/{size}")
 	public ResponseEntity<?> selecionarTodosPaginados(@PathVariable int page, @PathVariable int size) {
@@ -44,6 +46,7 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Seleciona todos os cartões.", response = CartaoDTO.class)
 	@GetMapping("/todos")
 	public ResponseEntity<?> selecionarTodos() {
@@ -56,6 +59,7 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Seleciona um cartão pelo seu identificador.", response = CartaoDTO.class)
 	@GetMapping("/id/{id}")
 	public ResponseEntity<?> selecionarPorId(@PathVariable Integer id) {
@@ -70,6 +74,7 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Seleciona um cartão pelo seu número.", response = CartaoDTO.class)
 	@GetMapping("/numero/{numero}")
 	public ResponseEntity<?> selecionarPorNumero(@PathVariable String numero) {
@@ -84,6 +89,7 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Seleciona todos os cartões pelo identificador do cliente.", response = CartaoDTO.class)
 	@GetMapping("/cliente/{cliente}")
 	public ResponseEntity<?> selecionarPorCliente(@PathVariable int cliente) {
@@ -98,6 +104,7 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Salva um cartão.", response = CartaoDTO.class)
 	@PostMapping
 	@Transactional
@@ -112,6 +119,7 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Atualiza um cartão.", response = CartaoDTO.class)
 	@PutMapping
 	@Transactional
@@ -126,12 +134,14 @@ public class CartaoController {
 		}
 	}
 
+	@CrossOrigin
 	@ApiOperation(value = "Deleta um cartão.", response = CartaoDTO.class)
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> deletar(@RequestBody CartaoDTO cartao) {
+	public ResponseEntity<?> deletar(@PathVariable int id) {
+		CartaoDTO cartao = CartaoDTO.builder().build();
 		try {
-			cartao = iCartaoAppService.deletar(cartao);
+			cartao = iCartaoAppService.deletar(id);
 			return new ResponseEntity<>(cartao, HttpStatus.OK);
 		} catch (ExcecaoDeNegocios e) {
 			return new ResponseEntity<>(cartao, HttpStatus.INTERNAL_SERVER_ERROR);

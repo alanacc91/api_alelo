@@ -48,8 +48,8 @@ public class CartaoRepository implements ICartaoRepository {
 	}
 
 	@Override
-	public void deletar(Cartao cartao) {
-		iCartaoJPARepository.delete(cartao);
+	public void deletar(int id) {
+		iCartaoJPARepository.deleteById(id);
 	}
 
 	@Override

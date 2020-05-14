@@ -153,9 +153,9 @@ public class CartaoService implements ICartaoService {
 	}
 
 	@Override
-	public void deletar(PilhaDeMensagensDeNegocios mensagens, Cartao cartao) throws ExcecaoDeNegocios {
+	public void deletar(PilhaDeMensagensDeNegocios mensagens, int id) throws ExcecaoDeNegocios {
 		try {
-			if (CartaoTemIdentificador.naoForValido().test(cartao)) {
+			if (id < 1) {
 				mensagens.adicionarMensagem("Necessário inserir um identificador para deletar o cartão!",
 						NivelDeMensagemDeNegocios.ERROR);
 			}
@@ -164,7 +164,7 @@ public class CartaoService implements ICartaoService {
 				throw new ExcecaoDeNegocios(mensagens);
 			}
 
-			iCartaoRepository.deletar(cartao);
+			iCartaoRepository.deletar(id);
 
 			mensagens.adicionarMensagem("Cartão deletado com sucesso!", NivelDeMensagemDeNegocios.INFO);
 
@@ -195,12 +195,12 @@ public class CartaoService implements ICartaoService {
 	}
 
 	@Override
-	public List<Cartao> selecionarPorCliente(PilhaDeMensagensDeNegocios mensagens, int id)
-			throws ExcecaoDeNegocios {
+	public List<Cartao> selecionarPorCliente(PilhaDeMensagensDeNegocios mensagens, int id) throws ExcecaoDeNegocios {
 
 		try {
 			if (id < 1) {
-				mensagens.adicionarMensagem("Necessário incluir o identificador de um cliente válido para selecionar um cartão!",
+				mensagens.adicionarMensagem(
+						"Necessário incluir o identificador de um cliente válido para selecionar um cartão!",
 						NivelDeMensagemDeNegocios.ERROR);
 			}
 

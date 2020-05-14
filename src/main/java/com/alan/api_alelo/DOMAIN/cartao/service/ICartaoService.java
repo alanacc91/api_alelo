@@ -33,6 +33,6 @@ public interface ICartaoService {
 
 	void atualizar(PilhaDeMensagensDeNegocios mensagens, Cartao cartao) throws ExcecaoDeNegocios;
 
-	void deletar(PilhaDeMensagensDeNegocios mensagens, Cartao cartao) throws ExcecaoDeNegocios;
+	void deletar(PilhaDeMensagensDeNegocios mensagens, int id) throws ExcecaoDeNegocios;
 
 }

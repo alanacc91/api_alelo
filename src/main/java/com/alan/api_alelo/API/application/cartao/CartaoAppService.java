@@ -118,12 +118,13 @@ public class CartaoAppService implements ICartaoAppService {
 	}
 
 	@Override
-	public CartaoDTO deletar(CartaoDTO cartao) throws ExcecaoDeNegocios {
+	public CartaoDTO deletar(int id) throws ExcecaoDeNegocios {
 		PilhaDeMensagensDeNegocios mensagens = PilhaDeMensagensDeNegocios.novaInstancia();
 		try {
-			iCartaoService.deletar(mensagens, cartao.retornarObjetoModelo());
-			return cartao;
+			iCartaoService.deletar(mensagens, id);
+			return CartaoDTO.builder().id(id).build();
 		} catch (Exception e) {
+			CartaoDTO cartao = CartaoDTO.builder().id(id).build();
 			cartao.setMensagens(mensagens);
 			throw e;
 		}
